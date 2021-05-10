@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Optional;
+
 @RestController
 @RequestMapping(value = "/api/v1/department/")
 @Slf4j
@@ -31,6 +33,6 @@ public class DepartmentController {
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Department> findById(@PathVariable Long id) {
         log.info("Inside find by id department controller");
-        return ResponseEntity.ok(departmentService.findById(id));
+        return Optional.ofNullable(departmentService.findById(id)).map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
     }
 }

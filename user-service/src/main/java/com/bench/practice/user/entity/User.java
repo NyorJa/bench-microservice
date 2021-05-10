@@ -1,4 +1,4 @@
-package com.bench.practice.department.entity;
+package com.bench.practice.user.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,19 +11,19 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-@Data
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Builder
+@Data
 @Entity
 @Table
-public class Department {
+public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private String name;
-    private String address;
-    private String code;
-
+    private String firstName;
+    private String lastName;
+    private String email;
+    private Long departmentId;
 }
