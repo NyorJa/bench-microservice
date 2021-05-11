@@ -1,6 +1,16 @@
-app:
-  name: user-service
-  description: user-service
+spring:
+  application:
+    name: USER-SERVICE
 
 server:
   port: 8081
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      enabled: true
+      default-zone: http://localhost:8761/eureka
+  instance:
+    hostname: localhost
