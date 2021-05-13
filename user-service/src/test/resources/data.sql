@@ -1,0 +1,1 @@
+insert into user (id, first_name, last_name, email, department_id) values (2, 'first', 'last', 'a@a.com', 2);

@@ -27,7 +27,7 @@ public class UserService {
     }
 
     public ResponseTemplateVO getUserWithDepartment(Long userId) {
-        log.info("Insave getting user with department");
+        log.info("In save getting user with department");
         User user = userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("User id: " + userId + " not existing"));
         ResponseEntity<Department> departmentResponseEntity = departmentClient.findById(user.getDepartmentId());
         Department department = null;
