@@ -33,15 +33,15 @@ spring:
 #            - CircuitBreaker=backendB
 #            - RewritePath=/fallback/testService/(?<path>.*), /$\{path}
 
-eureka:
-  client:
-    register-with-eureka: true
-    fetch-registry: true
-    service-url:
-      enabled: true
-      default-zone: http://localhost:8761/eureka
-  instance:
-    hostname: localhost
+#eureka:
+#  client:
+#    register-with-eureka: true
+#    fetch-registry: true
+#    service-url:
+#      enabled: true
+#      default-zone: http://localhost:8761/eureka
+#  instance:
+#    hostname: localhost
 
 logging.level.io.github.resilience4j: DEBUG
 
