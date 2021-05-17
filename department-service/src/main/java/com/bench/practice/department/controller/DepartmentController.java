@@ -33,6 +33,11 @@ public class DepartmentController {
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Department> findById(@PathVariable Long id) {
         log.info("Inside find by id department controller");
-        return Optional.ofNullable(departmentService.findById(id)).map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
+        try {
+            return ResponseEntity.ok(departmentService.findById(id));
+        } catch (IllegalArgumentException iex) {
+            log.warn(iex.getMessage());
+            return ResponseEntity.notFound().build();
+        }
     }
 }

@@ -31,6 +31,11 @@ public class UserController {
 
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ResponseTemplateVO> getUserWithDepartment(@PathVariable Long id) {
-        return ResponseEntity.ok(userService.getUserWithDepartment(id));
+        try {
+            return ResponseEntity.ok(userService.getUserWithDepartment(id));
+        } catch (IllegalArgumentException iex) {
+            log.warn(iex.getMessage());
+            return ResponseEntity.notFound().build();
+        }
     }
 }
