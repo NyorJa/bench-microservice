@@ -1,0 +1,49 @@
+version: '3'
+
+services:
+  cloud-config-server:
+    build: './cloud-config-server'
+    ports:
+      - 9296:9296
+    networks:
+      - bench-practice-network
+    environment:
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://service-registry:8761/eureka
+    depends_on:
+      - service-registry
+  cloud-gateway:
+    build: './cloud-gateway'
+    ports:
+      - 9191:9191
+    networks:
+      - bench-practice-network
+    depends_on:
+      - cloud-config-server
+      - department-service
+  department-service:
+    build: './department-service'
+    ports:
+      - 8080:8080
+    networks:
+      - bench-practice-network
+    depends_on:
+      - cloud-config-server
+  service-registry:
+    build: './service-registry'
+    ports:
+      - 8761:8761
+    networks:
+      - bench-practice-network
+  user-service:
+    build: './user-service'
+    ports:
+      - 8081:8081
+    networks:
+      - bench-practice-network
+    depends_on:
+      - cloud-config-server
+      - department-service
+
+networks:
+  bench-practice-network:
+    driver: bridge

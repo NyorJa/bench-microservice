@@ -8,5 +8,5 @@ spring:
     config:
       server:
         git:
-          uri: https://github.com/NyorJa/bench-config-server
+          uri: https://github.com/NyorJa/bench-config-server/application.yml
 
