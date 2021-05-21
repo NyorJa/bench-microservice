@@ -2,6 +2,7 @@ package com.bench.practice.department.configuration;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.web.bind.annotation.RequestMethod;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
@@ -42,5 +43,10 @@ public class SwaggerConfiguration {
     private ApiInfo apiInfo() {
         ApiInfo apiInfo = new ApiInfo("My REST API", "Some custom description of API.", "API TOS", "Terms of service", new Contact("Thirdy Fetalvero", "www.example.com", "botsot.felix@gmail.com"), "License of API", "API license URL", Collections.emptyList());
         return apiInfo;
+    }
+
+    @Bean
+    public static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer() {
+        return new PropertySourcesPlaceholderConfigurer();
     }
 }

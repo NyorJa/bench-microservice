@@ -1,6 +1,8 @@
 spring:
   application:
     name: DEPARTMENT-SERVICE
+  profiles:
+    active: dev
   zipkin:
     base-url: http://127.0.0.1:9411/
 

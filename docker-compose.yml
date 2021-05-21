@@ -1,7 +1,13 @@
 version: '3'
 
 services:
-  cloud-config-server:
+  service-registry:
+    build: './service-registry'
+    ports:
+      - 8761:8761
+    networks:
+      - bench-practice-network
+  config-server:
     build: './cloud-config-server'
     ports:
       - 9296:9296
@@ -12,8 +18,8 @@ services:
           -DEUREKA_SERVER=http://service-registry:8761/eureka
     depends_on:
       - service-registry
-    links:
-      - service-registry
+    # links:
+    #   - service-registry
   # cloud-gateway:
   #   build: './cloud-gateway'
   #   ports:
@@ -29,22 +35,13 @@ services:
       - 8080:8080
     networks:
       - bench-practice-network
-    links:
-      - cloud-config-server
-      - service-registry
     depends_on:
-      - cloud-config-server
+      - config-server
       - service-registry
     environment:
       - JAVA_OPTS=
-          -DEUREKA_SERVER=http://service-registry:8761/eureka
-          -DCONFIG_SERVER=http://cloud-config-server:9296
-  service-registry:
-    build: './service-registry'
-    ports:
-      - 8761:8761
-    networks:
-      - bench-practice-network
+          -DEUREKA_SERVER=http://service-registry:8761/eureka 
+          -DCONFIG_SERVER=http://config-server:9296
   # user-service:
   #   build: './user-service'
   #   ports:

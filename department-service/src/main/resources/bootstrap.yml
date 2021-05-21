@@ -1,10 +1,9 @@
 spring:
   cloud:
     config:
-      discovery:
-#        enabled: true
+      uri: ${CONFIG_SERVER:http://localhost:9296}
+  #        enabled: true
   #      uri: http://localhost:9296
-        uri: ${CONFIG_SERVER:http://localhost:9296}
 #        service-id: CONFIGSERVER
 
 
