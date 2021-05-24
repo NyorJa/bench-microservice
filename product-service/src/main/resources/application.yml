@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: product-service
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/product-service
+
+eureka:
+  instance:
+    istance-id: ${spring.application.name}:${random.uuid}
