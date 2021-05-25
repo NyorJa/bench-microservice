@@ -6,6 +6,7 @@
 - Java 11
 - Maven 3++
 - Docker
+- Vault
 
 ### How to run
 - Run config-server, user-service, department-service, service-registry, cloud-gateway
