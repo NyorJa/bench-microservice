@@ -1,9 +1,0 @@
-spring:
-  cloud:
-    config:
-      uri: ${CONFIG_SERVER:http://localhost:9296}
-  #        enabled: true
-  #      uri: http://localhost:9296
-#        service-id: CONFIGSERVER
-
-
