@@ -9,5 +9,4 @@
 - Vault
 
 ### How to run
-- Run config-server, user-service, department-service, service-registry, cloud-gateway
-- Run `docker run -d -p 9411:9411 openzipkin/zipkin`
+- Run configuration-server, discovery-server, order-service, product-service
