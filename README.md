@@ -7,6 +7,7 @@
 - Maven 3++
 - Docker
 - Vault
+- Keycloak
 
 ### How to run
 - Run configuration-server, discovery-server, order-service, product-service
