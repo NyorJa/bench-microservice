@@ -11,7 +11,7 @@ spring:
       kvVersion: 2
       port: 8200
       scheme: http
-      token: 00000000-0000-0000-0000-000000000000
+      token: s.KR7rDFNV5NZVsURAA0wD2Y8u
   config:
     import: optional:configserver:http://localhost:8888/
   datasource:
@@ -29,4 +29,5 @@ spring:
 management:
   endpoints:
     web:
-      exposure: include:*
+      exposure:
+        include: busrefresh

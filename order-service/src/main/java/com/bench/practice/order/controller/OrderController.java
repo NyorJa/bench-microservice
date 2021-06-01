@@ -6,10 +6,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@RefreshScope
 @RestController
-@RequestMapping("/api/v1/test")
-public class TestController {
+@RequestMapping("/api/v1/order")
+public class OrderController {
 
     @Value("${test.message:helloxxxx}")
     private String message;
