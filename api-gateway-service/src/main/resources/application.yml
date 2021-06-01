@@ -1,0 +1,72 @@
+#server:
+#  port: 8085
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include=gateway:
+
+#spring:
+#  application:
+#    name: api-gateway
+#  cloud:
+#    gateway:
+#      discovery:
+#        locator:
+#          lower-case-service-id: true
+#          enabled: true
+#    loadbalancer:
+#      ribbon:
+#        enabled: false
+#      routes:
+#        - id: order-service
+#          uri: localhost:8081
+#          predicates:
+#            - Path=/api/v1/order/
+#      - id: PRODUCT-SERVICE
+#        uri: lb://PRODUCT-SERVICE
+#        predicates:
+#          - Path=/api/v1/product/**
+
+
+spring:
+  application:
+    name: API-GATEWAY
+  output.ansi.enabled: ALWAYS
+  cloud:
+    gateway:
+      routes:
+        - id: ORDER-SERVICE
+          uri: lb://ORDER-SERVICE
+          predicates:
+            - Path=/api/v1/order/**
+        - id: PRODUCT-SERVICE
+          uri: lb://PRODUCT-SERVICE
+          predicates:
+            - Path=/api/v1/product/**
+#        - id: DEPARTMENT-SERVICE
+#          uri: lb://DEPARTMENT-SERVICE
+#          predicates:
+#            - Path=/api/v1/department/**
+#          filters:
+#            - name: CircuitBreaker
+#              args:
+#                name: backendB
+#                fallbackUri: forward:/fallback/testService
+#                statusCodes:
+#                  - 500
+
+logging:
+  level:
+    com:
+      netflix:
+        discovery: TRACE
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+#  instance:
+#    instance-id: ${spring.application.name}-${random.uuid}
+
