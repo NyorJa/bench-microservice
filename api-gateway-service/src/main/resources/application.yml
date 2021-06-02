@@ -1,5 +1,5 @@
-#server:
-#  port: 8085
+server:
+  port: 8085
 
 management:
   endpoints:
@@ -58,25 +58,25 @@ spring:
 #                  - 500
 
 
-  docker run --rm \
-  --name keycloak \
-  --net keycloak-network \
-  -e KEYCLOAK_USER=myadmin \
-  -e KEYCLOAK_PASSWORD=mypassword \
-  -p 9990:8080 \
-  -p 9991:8443 \
-  jboss/keycloak
+#  docker run --rm \
+#  --name keycloak \
+#  --net keycloak-network \
+#  -e KEYCLOAK_USER=myadmin \
+#  -e KEYCLOAK_PASSWORD=mypassword \
+#  -p 9990:8080 \
+#  -p 9991:8443 \
+#  jboss/keycloak
 
-logging:
-  level:
-    com:
-      netflix:
-        discovery: TRACE
+#logging:
+#  level:
+#    com:
+#      netflix:
+#        discovery: TRACE
 
 eureka:
   client:
     service-url:
       defaultZone: http://localhost:8761/eureka
-#  instance:
-#    instance-id: ${spring.application.name}-${random.uuid}
+  instance:
+    instance-id: ${spring.application.name}-${random.uuid}
 
