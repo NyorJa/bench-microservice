@@ -15,15 +15,21 @@ spring:
       kvVersion: 1
       port: 8200
       scheme: http
-      token: 00000000-0000-0000-0000-000000000000
+      token: s.KR7rDFNV5NZVsURAA0wD2Y8u
   data:
     mongodb:
       uri: ${mongo-uri}
+#      mongodb://<user>:<passwd>@<host>:<port>/<dbname>
   rabbitmq:
     host: localhost
     port: 5672
     username: guest
     password: guest
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8990/auth/realms/bench-realm
 
 management:
   endpoints:
