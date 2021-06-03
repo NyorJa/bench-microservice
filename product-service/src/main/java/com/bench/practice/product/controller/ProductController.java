@@ -24,15 +24,15 @@ public class ProductController {
         this.productRepository = productRepository;
     }
 
-    @GetMapping
-    @ResponseStatus(HttpStatus.OK)
-    public List<Product> findAll() {
-        return productRepository.findAll();
-    }
-
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public void createProduct(@RequestBody Product product) {
         productRepository.save(product);
+    }
+
+    @GetMapping
+    @ResponseStatus(HttpStatus.OK)
+    public List<Product> findAll() {
+        return productRepository.findAll();
     }
 }

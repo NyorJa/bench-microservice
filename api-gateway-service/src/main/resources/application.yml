@@ -41,11 +41,11 @@ spring:
         - id: ORDER-SERVICE
           uri: lb://ORDER-SERVICE
           predicates:
-              - Path=/api/v1/order/**
+            - Path=/api/v1/order/**
         - id: PRODUCT-SERVICE
           uri: lb://PRODUCT-SERVICE
           predicates:
-              - Path=/api/v1/product/**
+            - Path=/api/v1/product/**
   security:
     oauth2:
       client:

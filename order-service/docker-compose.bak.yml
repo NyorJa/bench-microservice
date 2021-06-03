@@ -9,12 +9,12 @@ services:
     environment:
       - 'VAULT_ADDR=http://localhost:8200'
     volumes:
-#      - ./volumes/logs:/vault/logs
+      #      - ./volumes/logs:/vault/logs
       - D:\docker\vault\volumes\logs:/vault/logs
       - D:\docker\vault\volumes\file:/vault/file
       - D:\docker\vault\volumes\config:/vault/config
-#      - ./volumes/file:/vault/file
-#      - ./volumes/config:/vault/config
+    #      - ./volumes/file:/vault/file
+    #      - ./volumes/config:/vault/config
     cap_add:
       - IPC_LOCK
     entrypoint: vault server -config=/vault/config/vault.json

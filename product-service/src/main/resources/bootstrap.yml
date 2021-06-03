@@ -19,7 +19,7 @@ spring:
   data:
     mongodb:
       uri: ${mongo-uri}
-#      mongodb://<user>:<passwd>@<host>:<port>/<dbname>
+  #      mongodb://<user>:<passwd>@<host>:<port>/<dbname>
   rabbitmq:
     host: localhost
     port: 5672
