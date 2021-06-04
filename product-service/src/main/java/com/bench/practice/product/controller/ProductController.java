@@ -17,12 +17,13 @@ import java.util.List;
 @RequestMapping("/api/v1/product")
 public class ProductController {
 
-    private final ProductRepository productRepository;
-
     @Autowired
-    public ProductController(ProductRepository productRepository) {
-        this.productRepository = productRepository;
-    }
+    private  ProductRepository productRepository;
+
+//    @Autowired
+//    public ProductController(ProductRepository productRepository) {
+//        this.productRepository = productRepository;
+//    }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
