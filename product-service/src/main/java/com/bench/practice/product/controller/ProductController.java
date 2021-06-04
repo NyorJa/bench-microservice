@@ -18,12 +18,12 @@ import java.util.List;
 public class ProductController {
 
     @Autowired
-    private  ProductRepository productRepository;
+    private final ProductRepository productRepository;
 
-//    @Autowired
-//    public ProductController(ProductRepository productRepository) {
-//        this.productRepository = productRepository;
-//    }
+    @Autowired
+    public ProductController(ProductRepository productRepository) {
+        this.productRepository = productRepository;
+    }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
