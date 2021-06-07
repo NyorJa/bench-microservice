@@ -1,5 +1,6 @@
 package com.bench.practice.inventory.service.controller;
 
+import com.bench.practice.inventory.service.exception.ResourceNotFoundException;
 import com.bench.practice.inventory.service.model.Inventory;
 import com.bench.practice.inventory.service.repository.InventoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +24,7 @@ public class InventoryController {
     @GetMapping("/{skuCode}")
     public Boolean isInStock(@PathVariable String skuCode) {
         Inventory inventory = inventoryRepository.findBySkuCode(skuCode)
-                                                 .orElseThrow(() -> new RuntimeException("Cannot find product by sku code " + skuCode));
+                                                 .orElseThrow(() -> new ResourceNotFoundException("Cannot find product by sku code " + skuCode));
         return inventory.getStock() > 0;
     }
 }

@@ -1,4 +1,4 @@
-package com.bench.practice.product.configuration;
+package com.bench.practice.inventory.service.configuration;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
