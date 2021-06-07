@@ -3,14 +3,13 @@ package com.bench.practice.product.controller;
 import com.bench.practice.product.model.Product;
 import com.bench.practice.product.repository.ProductRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.ActiveProfiles;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
@@ -19,13 +18,13 @@ import java.util.List;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@ActiveProfiles("test")
-@ExtendWith(MockitoExtension.class)
 @AutoConfigureMockMvc
 @WebMvcTest(controllers = ProductController.class)
 public class ProductControllerTest {
@@ -36,6 +35,9 @@ public class ProductControllerTest {
     @MockBean
     private ProductRepository productRepository;
 
+    private static final String PATH = "/api/v1/product";
+
+    @DisplayName("Get product and return 200")
     @Test
     void testGet() throws Exception {
 
@@ -48,7 +50,7 @@ public class ProductControllerTest {
 
         when(productRepository.findAll()).thenReturn(List.of(product));
 
-        MvcResult mvcResult = mockMvc.perform(get("/api/v1/product"))
+        MvcResult mvcResult = mockMvc.perform(get(PATH))
                                      .andDo(print())
                                      .andExpect(status().isOk())
                                      .andReturn();
@@ -56,5 +58,26 @@ public class ProductControllerTest {
         String responseBody = mvcResult.getResponse().getContentAsString();
         assertThat(responseBody)
                 .isEqualToIgnoringWhitespace(new ObjectMapper().writeValueAsString(List.of(product)));
+    }
+
+    @DisplayName("Post product and created")
+    @Test
+    void testCreate() throws Exception {
+        Product product = Product.builder()
+                                 .id(UUID.randomUUID().toString())
+                                 .description("desc-1")
+                                 .name("viagra")
+                                 .price(BigDecimal.valueOf(120))
+                                 .build();
+
+
+        when(productRepository.save(any(Product.class))).thenReturn(product);
+
+
+        mockMvc.perform(post(PATH)
+                                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                                .content(new ObjectMapper().writeValueAsString(product)))
+               .andDo(print())
+               .andExpect(status().isCreated());
     }
 }
