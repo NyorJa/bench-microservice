@@ -22,17 +22,8 @@ class OrderControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
-    @Spy
-    private final OrderController orderController = new OrderController();
 
     private static final String PATH = "/api/v1/order";
 
-    @Test
-    void testGreet() throws Exception {
-        ReflectionTestUtils.setField(orderController, "message", "message");
 
-        mockMvc.perform(get(PATH))
-               .andDo(print())
-               .andExpect(status().isOk());
-    }
 }

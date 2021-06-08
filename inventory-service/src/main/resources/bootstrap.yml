@@ -1,0 +1,21 @@
+spring:
+  cloud:
+    config:
+      uri: http://localhost:8888
+      import: optional:configserver:http://localhost:8888/
+    vault:
+      application-name: inventory-service
+      authentication: TOKEN
+      generic:
+        default-context: ''
+      host: localhost
+      kv:
+        enabled: true
+      kvVersion: 2
+      port: 8200
+      scheme: http
+      token: s.KR7rDFNV5NZVsURAA0wD2Y8u
+  datasource:
+    username: ${db-name}
+    password: ${db-password}
+
