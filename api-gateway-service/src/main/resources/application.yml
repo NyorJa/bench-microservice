@@ -1,40 +1,20 @@
 server:
   port: 8085
 
-management:
-  endpoints:
-    web:
-      exposure:
-        include=gateway:
-
-#spring:
-#  application:
-#    name: api-gateway
-#  cloud:
-#    gateway:
-#      discovery:
-#        locator:
-#          lower-case-service-id: true
-#          enabled: true
-#    loadbalancer:
-#      ribbon:
-#        enabled: false
-#      routes:
-#        - id: order-service
-#          uri: localhost:8081
-#          predicates:
-#            - Path=/api/v1/order/
-#      - id: PRODUCT-SERVICE
-#        uri: lb://PRODUCT-SERVICE
-#        predicates:
-#          - Path=/api/v1/product/**
-
+#management:
+#  endpoints:
+#    web:
+#      exposure:
+#        include=gateway:
 
 spring:
   application:
     name: API-GATEWAY
   output.ansi.enabled: ALWAYS
   cloud:
+    loadbalancer:
+      ribbon:
+        enabled: false
     gateway:
       default-filters: TokenRelay
       routes:
@@ -46,10 +26,6 @@ spring:
           uri: lb://PRODUCT-SERVICE
           predicates:
             - Path=/api/v1/product/**
-        - id: INVENTORY-SERVICE
-          uri: lb://INVENTORY-SERVICE
-          predicates:
-            - Path=/api/v1/inventory/**
   security:
     oauth2:
       client:
@@ -63,33 +39,6 @@ spring:
             provider: keycloak
             authorization-grant-type: authorization_code
             redirect-uri: http://localhost:8085/login/oauth2/code/spring-cloud-gateway-client
-#        - id: DEPARTMENT-SERVICE
-#          uri: lb://DEPARTMENT-SERVICE
-#          predicates:
-#            - Path=/api/v1/department/**
-#          filters:
-#            - name: CircuitBreaker
-#              args:
-#                name: backendB
-#                fallbackUri: forward:/fallback/testService
-#                statusCodes:
-#                  - 500
-
-
-#  docker run --rm \
-#  --name keycloak \
-#  --net keycloak-network \
-#  -e KEYCLOAK_USER=myadmin \
-#  -e KEYCLOAK_PASSWORD=mypassword \
-#  -p 9990:8080 \
-#  -p 9991:8443 \
-#  jboss/keycloak
-
-#logging:
-#  level:
-#    com:
-#      netflix:
-#        discovery: TRACE
 
 eureka:
   client:
