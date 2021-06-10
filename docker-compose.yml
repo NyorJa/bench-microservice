@@ -1,57 +1,135 @@
 version: '3'
 
-services:
-  service-registry:
-    build: './service-registry'
-    ports:
-      - 8761:8761
-    networks:
-      - bench-practice-network
-  config-server:
-    build: './cloud-config-server'
-    ports:
-      - 9296:9296
-    networks:
-      - bench-practice-network
-    environment:
-      - JAVA_OPTS=
-          -DEUREKA_SERVER=http://service-registry:8761/eureka
-    depends_on:
-      - service-registry
-    # links:
-    #   - service-registry
-  # cloud-gateway:
-  #   build: './cloud-gateway'
-  #   ports:
-  #     - 9191:9191
-  #   networks:
-  #     - bench-practice-network
-  #   depends_on:
-  #     - cloud-config-server
-  #     - department-service
-  department-service:
-    build: './department-service'
-    ports:
-      - 8080:8080
-    networks:
-      - bench-practice-network
-    depends_on:
-      - config-server
-      - service-registry
-    environment:
-      - JAVA_OPTS=
-          -DEUREKA_SERVER=http://service-registry:8761/eureka 
-          -DCONFIG_SERVER=http://config-server:9296
-  # user-service:
-  #   build: './user-service'
-  #   ports:
-  #     - 8081:8081
-  #   networks:
-  #     - bench-practice-network
-  #   depends_on:
-  #     - cloud-config-server
-  #     - department-service
+volumes:
+  postgres_data:
+    driver: local
+  mysql_data:
+    driver: local
+  mongo_data:
+    driver: local
 
-networks:
-  bench-practice-network:
-    driver: bridge
+services:
+  postgres:
+    image: postgres
+    container_name: postgres-keycloak
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: keycloak
+      POSTGRES_USER: keycloak
+      POSTGRES_PASSWORD: password
+
+  mysql:
+    image: mysql:5.7
+    container_name: mysql
+    volumes:
+      - mysql_data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: mysql
+    ports:
+      - 3600:3600
+
+  mongo:
+    image: mongo
+    container_name: mongo
+    restart: always
+    ports:
+      - 27017:27017
+    volumes:
+      - mongo_data:/data/db
+
+  vault:
+    image: vault
+    container_name: vault
+    ports:
+      - "8200:8200"
+    restart: always
+    environment:
+      - 'VAULT_ADDR=http://localhost:8200'
+    volumes:
+      - D:\docker\vault\volumes\logs:/vault/logs
+      - D:\docker\vault\volumes\file:/vault/file
+      - D:\docker\vault\volumes\config:/vault/config
+    cap_add:
+      - IPC_LOCK
+    entrypoint: vault server -config=/vault/config/vault.json
+
+  keycloak:
+    container_name: keycloak
+    image: quay.io/keycloak/keycloak:latest
+    environment:
+      DB_VENDOR: POSTGRES
+      DB_ADDR: postgres
+      DB_DATABASE: keycloak
+      DB_USER: keycloak
+      DB_SCHEMA: public
+      DB_PASSWORD: password
+      KEYCLOAK_USER: admin
+      KEYCLOAK_PASSWORD: Pa55w0rd
+      # Uncomment the line below if you want to specify JDBC parameters. The parameter below is just an example, and it shouldn't be used in production without knowledge. It is highly recommended that you read the PostgreSQL JDBC driver documentation in order to use it.
+      #JDBC_PARAMS: "ssl=true"
+    ports:
+      - 8180:8080
+    depends_on:
+      - postgres
+
+
+
+
+# version: '3'
+
+# services:
+#   service-registry:
+#     build: './service-registry'
+#     ports:
+#       - 8761:8761
+#     networks:
+#       - bench-practice-network
+#   config-server:
+#     build: './cloud-config-server'
+#     ports:
+#       - 9296:9296
+#     networks:
+#       - bench-practice-network
+#     environment:
+#       - JAVA_OPTS=
+#           -DEUREKA_SERVER=http://service-registry:8761/eureka
+#     depends_on:
+#       - service-registry
+#     # links:
+#     #   - service-registry
+#   # cloud-gateway:
+#   #   build: './cloud-gateway'
+#   #   ports:
+#   #     - 9191:9191
+#   #   networks:
+#   #     - bench-practice-network
+#   #   depends_on:
+#   #     - cloud-config-server
+#   #     - department-service
+#   department-service:
+#     build: './department-service'
+#     ports:
+#       - 8080:8080
+#     networks:
+#       - bench-practice-network
+#     depends_on:
+#       - config-server
+#       - service-registry
+#     environment:
+#       - JAVA_OPTS=
+#           -DEUREKA_SERVER=http://service-registry:8761/eureka 
+#           -DCONFIG_SERVER=http://config-server:9296
+#   # user-service:
+#   #   build: './user-service'
+#   #   ports:
+#   #     - 8081:8081
+#   #   networks:
+#   #     - bench-practice-network
+#   #   depends_on:
+#   #     - cloud-config-server
+#   #     - department-service
+
+# networks:
+#   bench-practice-network:
+#     driver: bridge
