@@ -111,6 +111,28 @@ services:
         -DKEYCLOAK_URI=http://keycloak:8080/auth/realms/microservices-realm
         -DEUREKA_URI=http://eureka:8761/eureka/
 
+  product-service:
+    container_name: product-service
+    build:
+      context: ./product-service/product-service
+    restart: on-failure
+    ports:
+      - 8091:8091
+    environment:
+      - JAVA_OPTS=
+        -DCONFIG_URI=http://configuration-server:8888
+        -DVAULT_HOST=vault
+        -DMONGO_HOST=mongo
+        -DRABBIT_HOST=rabbit
+        -DKEYCLOAK_URI=http://keycloak:8080/auth/realms/microservices-realm
+        -DEUREKA_URI=http://eureka:8761/eureka/
+    depends_on:
+      - eureka
+      - configuration-server
+      - rabbitmq
+      - vault
+      - mongo
+
 
 
 # version: '3'
