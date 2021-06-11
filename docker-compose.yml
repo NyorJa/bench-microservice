@@ -82,6 +82,34 @@ services:
     depends_on:
       - postgres
 
+  configuration-server:
+    container_name: configuration-server
+    build:
+      context: ./configuration-server/configuration-server
+    ports:
+      - 8888:8888 
+
+  eureka:
+    container_name: eureka
+    build:
+      context: ./discovery-server/discovery-server
+    ports:
+      - 8761:8761
+
+  api-gateway-service:
+    container_name: api-gateway-service
+    build:
+      context: ./api-gateway-service/api-gateway-service
+    restart: on-failure
+    ports:
+      - 8080:8080
+    depends_on:
+      - eureka
+      - keycloak
+    environment:
+      - JAVA_OPTS=
+        -DKEYCLOAK_URI=http://keycloak:8080/auth/realms/microservices-realm
+        -DEUREKA_URI=http://eureka:8761/eureka/
 
 
 

@@ -8,10 +8,7 @@ spring:
             server:
                 git:
                     clone-on-start: true
-#                    password: ''
-#                    uri: https://github.com/SaiUpadhyayula/microservices-config-server
                     uri: https://github.com/NyorJa/bench-config-server
                     default-label: main
-#                    username: ''
 
 
