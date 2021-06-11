@@ -123,7 +123,7 @@ services:
         -DCONFIG_URI=http://configuration-server:8888
         -DVAULT_HOST=vault
         -DMONGO_HOST=mongo
-        -DRABBIT_HOST=rabbit
+        -DRABBIT_HOST=rabbitmq
         -DKEYCLOAK_URI=http://keycloak:8080/auth/realms/microservices-realm
         -DEUREKA_URI=http://eureka:8761/eureka/
     depends_on:
@@ -133,62 +133,26 @@ services:
       - vault
       - mongo
 
-
-
-# version: '3'
-
-# services:
-#   service-registry:
-#     build: './service-registry'
-#     ports:
-#       - 8761:8761
-#     networks:
-#       - bench-practice-network
-#   config-server:
-#     build: './cloud-config-server'
-#     ports:
-#       - 9296:9296
-#     networks:
-#       - bench-practice-network
-#     environment:
-#       - JAVA_OPTS=
-#           -DEUREKA_SERVER=http://service-registry:8761/eureka
-#     depends_on:
-#       - service-registry
-#     # links:
-#     #   - service-registry
-#   # cloud-gateway:
-#   #   build: './cloud-gateway'
-#   #   ports:
-#   #     - 9191:9191
-#   #   networks:
-#   #     - bench-practice-network
-#   #   depends_on:
-#   #     - cloud-config-server
-#   #     - department-service
-#   department-service:
-#     build: './department-service'
-#     ports:
-#       - 8080:8080
-#     networks:
-#       - bench-practice-network
-#     depends_on:
-#       - config-server
-#       - service-registry
-#     environment:
-#       - JAVA_OPTS=
-#           -DEUREKA_SERVER=http://service-registry:8761/eureka 
-#           -DCONFIG_SERVER=http://config-server:9296
-#   # user-service:
-#   #   build: './user-service'
-#   #   ports:
-#   #     - 8081:8081
-#   #   networks:
-#   #     - bench-practice-network
-#   #   depends_on:
-#   #     - cloud-config-server
-#   #     - department-service
-
-# networks:
-#   bench-practice-network:
-#     driver: bridge
+  order-service:
+    container_name: order-service
+    build:
+      context: ./order-service/order-service
+    restart: on-failure
+    ports: 
+      - 8092:8092
+    environment:
+      - JAVA_OPTS=
+        -DCONFIG_URI=http://configuration-server:8888
+        -DVAULT_HOST=vault
+        -DMONGO_HOST=mongo
+        -DRABBIT_HOST=rabbitmq
+        -DKEYCLOAK_URI=http://keycloak:8080/auth/realms/microservices-realm
+        -DEUREKA_URI=http://eureka:8761/eureka/
+        -DMYSQL_URI=jdbc:mysql://mysql:3306/order_service
+    depends_on:
+      - eureka
+      - rabbitmq
+      - vault
+      - mysql
+      - configuration-server
+    
