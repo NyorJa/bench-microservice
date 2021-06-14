@@ -114,126 +114,126 @@ services:
     networks:
       - spring-cloud-network
 
-  # configuration-server:
-  #   container_name: configuration-server
-  #   build:
-  #     context: ./configuration-server/configuration-server
-  #   ports:
-  #     - 8888:8888 
-  #   networks:
-  #     - spring-cloud-network
+  configuration-server:
+    container_name: configuration-server
+    build:
+      context: ./configuration-server/configuration-server
+    ports:
+      - 8888:8888 
+    networks:
+      - spring-cloud-network
 
-  # eureka:
-  #   container_name: eureka
-  #   build:
-  #     context: ./discovery-server/discovery-server
-  #   ports:
-  #     - 8761:8761
-  #   networks:
-  #     - spring-cloud-network
+  eureka:
+    container_name: eureka
+    build:
+      context: ./discovery-server/discovery-server
+    ports:
+      - 8761:8761
+    networks:
+      - spring-cloud-network
 
-  # api-gateway-service:
-  #   container_name: api-gateway-service
-  #   build:
-  #     context: ./api-gateway-service/api-gateway-service
-  #   restart: on-failure
-  #   ports:
-  #     - 8080:8080
-  #   depends_on:
-  #     - eureka
-  #     - keycloak
-  #   environment:
-  #     - JAVA_OPTS=
-  #       -DKEYCLOAK_URI=http://keycloak:8080/auth/realms/microservices-realm
-  #       -DEUREKA_URI=http://eureka:8761/eureka/
-  #   networks:
-  #     - spring-cloud-network
+  api-gateway-service:
+    container_name: api-gateway-service
+    build:
+      context: ./api-gateway-service/api-gateway-service
+    restart: on-failure
+    ports:
+      - 8080:8080
+    depends_on:
+      - eureka
+      - keycloak
+    environment:
+      - JAVA_OPTS=
+        -DKEYCLOAK_URI=http://keycloak:8080/auth/realms/microservices-realm
+        -DEUREKA_URI=http://eureka:8761/eureka/
+    networks:
+      - spring-cloud-network
 
-  # product-service:
-  #   container_name: product-service
-  #   build:
-  #     context: ./product-service/product-service
-  #   restart: on-failure
-  #   ports:
-  #     - 8091:8091
-  #   environment:
-  #     - JAVA_OPTS=
-  #       -DCONFIG_URI=http://configuration-server:8888
-  #       -DVAULT_HOST=vault
-  #       -DMONGO_HOST=mongo
-  #       -DRABBIT_HOST=rabbitmq
-  #       -DKEYCLOAK_URI=http://keycloak:8080/auth/realms/microservices-realm
-  #       -DEUREKA_URI=http://eureka:8761/eureka/
-  #   depends_on:
-  #     - eureka
-  #     - configuration-server
-  #     - rabbitmq
-  #     - vault
-  #     - mongo
-  #   networks:
-  #     - spring-cloud-network
+  product-service:
+    container_name: product-service
+    build:
+      context: ./product-service/product-service
+    restart: on-failure
+    ports:
+      - 8091:8091
+    environment:
+      - JAVA_OPTS=
+        -DCONFIG_URI=http://configuration-server:8888
+        -DVAULT_HOST=vault
+        -DMONGO_HOST=mongo
+        -DRABBIT_HOST=rabbitmq
+        -DKEYCLOAK_URI=http://keycloak:8080/auth/realms/microservices-realm
+        -DEUREKA_URI=http://eureka:8761/eureka/
+    depends_on:
+      - eureka
+      - configuration-server
+      - rabbitmq
+      - vault
+      - mongo
+    networks:
+      - spring-cloud-network
 
-  # order-service:
-  #   container_name: order-service
-  #   build:
-  #     context: ./order-service/order-service
-  #   restart: on-failure
-  #   ports: 
-  #     - 8092:8092
-  #   environment:
-  #     - JAVA_OPTS=
-  #       -DCONFIG_URI=http://configuration-server:8888
-  #       -DVAULT_HOST=vault
-  #       -DMONGO_HOST=mongo
-  #       -DRABBIT_HOST=rabbitmq
-  #       -DKEYCLOAK_URI=http://keycloak:8080/auth/realms/microservices-realm
-  #       -DEUREKA_URI=http://eureka:8761/eureka/
-  #       -DMYSQL_URI=jdbc:mysql://mysql-container:3306/order_service
-  #   depends_on:
-  #     - eureka
-  #     - rabbitmq
-  #     - vault
-  #     - mysql-container
-  #     - configuration-server
-  #   networks:
-  #     - spring-cloud-network
+  order-service:
+    container_name: order-service
+    build:
+      context: ./order-service/order-service
+    restart: on-failure
+    ports: 
+      - 8092:8092
+    environment:
+      - JAVA_OPTS=
+        -DCONFIG_URI=http://configuration-server:8888
+        -DVAULT_HOST=vault
+        -DMONGO_HOST=mongo
+        -DRABBIT_HOST=rabbitmq
+        -DKEYCLOAK_URI=http://keycloak:8080/auth/realms/microservices-realm
+        -DEUREKA_URI=http://eureka:8761/eureka/
+        -DMYSQL_URI=jdbc:mysql://mysql-container:3306/order_service
+    depends_on:
+      - eureka
+      - rabbitmq
+      - vault
+      - mysql-container
+      - configuration-server
+    networks:
+      - spring-cloud-network
 
-  # inventory-service:
-  #   container_name: inventory-service
-  #   build:
-  #     context: ./inventory-service/inventory-service
-  #   restart: on-failure
-  #   ports:
-  #     - 8183:8183
-  #   environment:
-  #     - JAVA_OPTS=
-  #       -DCONFIG_URI=http://configuration-server:8888
-  #       -DVAULT_HOST=vault
-  #       -DRABBIT_HOST=rabbitmq
-  #       -DKEYCLOAK_URI=http://keycloak:8080/auth/realms/microservices-realm
-  #       -DEUREKA_URI=http://eureka:8761/eureka/
-  #       -DMYSQL_URI=jdbc:mysql://mysql-container:3306/inventory_service&autoReconnect=true&failOverReadOnly=false&maxReconnects=10
-  #   depends_on:
-  #     - eureka
-  #     - rabbitmq
-  #     - vault
-  #     - mysql-container
-  #     - configuration-server
+  inventory-service:
+    container_name: inventory-service
+    build:
+      context: ./inventory-service/inventory-service
+    restart: on-failure
+    ports:
+      - 8183:8183
+    environment:
+      - JAVA_OPTS=
+        -DCONFIG_URI=http://configuration-server:8888
+        -DVAULT_HOST=vault
+        -DRABBIT_HOST=rabbitmq
+        -DKEYCLOAK_URI=http://keycloak:8080/auth/realms/microservices-realm
+        -DEUREKA_URI=http://eureka:8761/eureka/
+        -DMYSQL_URI=jdbc:mysql://mysql-container:3306/inventory_service&autoReconnect=true&failOverReadOnly=false&maxReconnects=10
+    depends_on:
+      - eureka
+      - rabbitmq
+      - vault
+      - mysql-container
+      - configuration-server
 
-  # notification:
-  #   container_name: notification-service
-  #   build:
-  #     context: ./notification-service/notification-service
-  #   restart: on-failure
-  #   ports:
-  #     - 8093:8093
-  #   depends_on:
-  #     - zipkin
-  #   environment:
-  #     - JAVA_OPTS=
-  #       -DZIPKIN_URI=http://zipkin:9411/
-  #   networks:
-  #     - spring-cloud-network
+  notification:
+    container_name: notification-service
+    build:
+      context: ./notification-service/notification-service
+    restart: on-failure
+    ports:
+      - 8093:8093
+    depends_on:
+      - zipkin
+    environment:
+      - JAVA_OPTS=
+        -DZIPKIN_URI=http://zipkin:9411/
+    networks:
+      - spring-cloud-network
 
     
 
