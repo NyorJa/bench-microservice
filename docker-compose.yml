@@ -5,8 +5,6 @@ volumes:
     driver: local
   mysql_data:
     driver: local
-  mysql2_data:
-    driver: local
   mongo_data:
     driver: local
 
@@ -18,8 +16,14 @@ services:
     ports:
       - 5672:5672
       - 15672:15672
-    networks:
-      - spring-cloud-network
+    # networks:
+    #   - spring-cloud-network
+
+  zipkin:
+    image: openzipkin/zipkin
+    container_name: zipkin
+    ports:
+      - 9411:9411
 
 
   postgres:
@@ -194,29 +198,42 @@ services:
     networks:
       - spring-cloud-network
 
-  # inventory-service:
-  #   container_name: inventory-service
-  #   build:
-  #     context: ./inventory-service/inventory-service
-  #   restart: on-failure
-  #   ports:
-  #     - 8183:8183
-  #   environment:
-  #     - JAVA_OPTS=
-  #       -DCONFIG_URI=http://configuration-server:8888
-  #       -DVAULT_HOST=vault
-  #       -DRABBIT_HOST=rabbitmq
-  #       -DKEYCLOAK_URI=http://keycloak:8080/auth/realms/microservices-realm
-  #       -DEUREKA_URI=http://eureka:8761/eureka/
-  #       -DMYSQL_URI=jdbc:mysql://mysql-container:3306/inventory_service&autoReconnect=true&failOverReadOnly=false&maxReconnects=10
-  #   depends_on:
-  #     - eureka
-  #     - rabbitmq
-  #     - vault
-  #     - mysql-container
-  #     - configuration-server
-  #   networks:
-  #     - spring-cloud-network
+  inventory-service:
+    container_name: inventory-service
+    build:
+      context: ./inventory-service/inventory-service
+    restart: on-failure
+    ports:
+      - 8183:8183
+    environment:
+      - JAVA_OPTS=
+        -DCONFIG_URI=http://configuration-server:8888
+        -DVAULT_HOST=vault
+        -DRABBIT_HOST=rabbitmq
+        -DKEYCLOAK_URI=http://keycloak:8080/auth/realms/microservices-realm
+        -DEUREKA_URI=http://eureka:8761/eureka/
+        -DMYSQL_URI=jdbc:mysql://mysql-container:3306/inventory_service&autoReconnect=true&failOverReadOnly=false&maxReconnects=10
+    depends_on:
+      - eureka
+      - rabbitmq
+      - vault
+      - mysql-container
+      - configuration-server
+
+  notification:
+    container_name: notification-service
+    build:
+      context: ./notification-service/notification-service
+    restart: on-failure
+    ports:
+      - 8093:8093
+    depends_on:
+      - zipkin
+    environment:
+      - JAVA_OPTS=
+        -DZIPKIN_URI=http://zipkin:9411/
+
+    
 
 
 networks:
