@@ -9,14 +9,19 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.circuitbreaker.resilience4j.Resilience4JCircuitBreaker;
 import org.springframework.cloud.circuitbreaker.resilience4j.Resilience4JCircuitBreakerFactory;
 import org.springframework.cloud.stream.function.StreamBridge;
+import org.springframework.http.HttpStatus;
 import org.springframework.messaging.support.MessageBuilder;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.ExecutorService;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/order")
@@ -29,6 +34,18 @@ public class OrderController {
     private final Resilience4JCircuitBreakerFactory circuitBreakerFactory;
     private final StreamBridge streamBridge;
     private final ExecutorService traceableExecutorService;
+
+
+    @GetMapping
+    @ResponseStatus(HttpStatus.OK)
+    public List<Order> getOrders() {
+        List<Order> orders = orderRepository.findAll();
+
+        List<Long> orderId = orderRepository.findAll().stream().map(Order::getId).collect(Collectors.toList());
+        streamBridge.send("notificationEventSupplier-out-0", MessageBuilder.withPayload(orderId).build());
+
+        return orders;
+    }
 
     @PostMapping
     public String placeOrder(@RequestBody OrderDto orderDto) {
