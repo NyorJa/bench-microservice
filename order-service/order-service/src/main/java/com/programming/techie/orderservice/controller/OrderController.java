@@ -41,7 +41,7 @@ public class OrderController {
     public List<Order> getOrders() {
         List<Order> orders = orderRepository.findAll();
 
-        List<Long> orderId = orderRepository.findAll().stream().map(Order::getId).collect(Collectors.toList());
+        List<Long> orderId = orders.stream().map(Order::getId).collect(Collectors.toList());
         streamBridge.send("notificationEventSupplier-out-0", MessageBuilder.withPayload(orderId).build());
 
         return orders;
