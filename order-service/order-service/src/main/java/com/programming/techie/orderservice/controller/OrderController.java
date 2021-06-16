@@ -63,7 +63,7 @@ public class OrderController {
             order.setOrderLineItems(orderDto.getOrderLineItemsList());
             order.setOrderNumber(UUID.randomUUID().toString());
 
-            orderRepository.save(order);
+            order = orderRepository.save(order);
             log.info("Sending Order Details with Order Id {} to Notification Service", order.getId());
             streamBridge.send("notificationEventSupplier-out-0", MessageBuilder.withPayload(order.getId()).build());
             return "Order Place Successfully";
