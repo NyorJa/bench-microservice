@@ -310,6 +310,6 @@ services:
     
 
 
-networks:
-  spring-cloud-network:
-    driver: bridge
+# networks:
+#   spring-cloud-network:
+#     driver: bridge
