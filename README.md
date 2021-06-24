@@ -8,6 +8,7 @@
 - Docker
 - Vault
 - Keycloak
+- Zipkin
 
 ### How to run
 - Run configuration-server, discovery-server, order-service, product-service, gateway-service, notification service
