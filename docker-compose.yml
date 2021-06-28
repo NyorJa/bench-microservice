@@ -132,49 +132,6 @@ services:
     # networks:
     #   - spring-cloud-network
 
-
-  # elk:
-  #   image: sebp/elk:7.13.2
-  #   container_name: elk
-  #   ports:
-  #     - 5601:5601
-  #     - 9200:9200
-  #     - 5044:5044
-  #   environment:
-  #     - ELASTICSEARCH_USER=elastic
-  #     - ELASTICSEARCH_PASSWORD=changeme
-  #     - LOGSTASH_USER=elastic
-  #     - LOGSTASH_PASSWORD=changeme
-  #     - KIBANA_USER=kibana
-  #     - KIBANA_PASSWORD=changeme
-
-  # elasticsearch:
-  #   image: elasticsearch:7.11.2
-  #   container_name: elasticsearch
-  #   ports:
-  #     - 9200:9200
-  #     - 9300:9300
-  #   environment:
-  #     - discovery.type=single-node
-
-  # logstash:
-  #   image: logstash:7.11.2
-  #   container_name: logstash
-  #   volumes:
-  #     - ./logstash/logstash.conf:/bin/
-  #   ports:
-  #     - 5000:5000
-  #   depends_on:
-  #     - elasticsearch
-  
-  # kibana:
-  #   image: kibana:7.11.2
-  #   container_name: kibana
-  #   ports:
-  #     - 5601:5601
-  #   depends_on:
-  #     - elasticsearch
-
   elasticsearch:
     image: elasticsearch:7.9.2
     ports:
@@ -203,44 +160,44 @@ services:
 
 
 
-  # api-gateway-service:
-  #   container_name: api-gateway-service
-  #   build:
-  #     context: ./api-gateway-service/api-gateway-service
-  #   restart: on-failure
-  #   ports:
-  #     - 8080:8080
-  #   depends_on:
-  #     - eureka
-  #     - keycloak
-  #   environment:
-  #     - JAVA_OPTS=
-  #       -DKEYCLOAK_URI=http://keycloak:8080/auth/realms/microservices-realm
-  #       -DEUREKA_URI=http://eureka:8761/eureka/
+  api-gateway-service:
+    container_name: api-gateway-service
+    build:
+      context: ./api-gateway-service/api-gateway-service
+    restart: on-failure
+    ports:
+      - 8080:8080
+    depends_on:
+      - eureka
+      - keycloak
+    environment:
+      - JAVA_OPTS=
+        -DKEYCLOAK_URI=http://keycloak:8080/auth/realms/microservices-realm
+        -DEUREKA_URI=http://eureka:8761/eureka/
   #   networks:
   #     - spring-cloud-network
 
-  # product-service:
-  #   container_name: product-service
-  #   build:
-  #     context: ./product-service/product-service
-  #   restart: on-failure
-  #   ports:
-  #     - 8091:8091
-  #   environment:
-  #     - JAVA_OPTS=
-  #       -DCONFIG_URI=http://configuration-server:8888
-  #       -DVAULT_HOST=vault
-  #       -DMONGO_HOST=mongo
-  #       -DRABBIT_HOST=rabbitmq
-  #       -DKEYCLOAK_URI=http://keycloak:8080/auth/realms/microservices-realm
-  #       -DEUREKA_URI=http://eureka:8761/eureka/
-  #   depends_on:
-  #     - eureka
-  #     - configuration-server
-  #     - rabbitmq
-  #     - vault
-  #     - mongo
+  product-service:
+    container_name: product-service
+    build:
+      context: ./product-service/product-service
+    restart: on-failure
+    ports:
+      - 8091:8091
+    environment:
+      - JAVA_OPTS=
+        -DCONFIG_URI=http://configuration-server:8888
+        -DVAULT_HOST=vault
+        -DMONGO_HOST=mongo
+        -DRABBIT_HOST=rabbitmq
+        -DKEYCLOAK_URI=http://keycloak:8080/auth/realms/microservices-realm
+        -DEUREKA_URI=http://eureka:8761/eureka/
+    depends_on:
+      - eureka
+      - configuration-server
+      - rabbitmq
+      - vault
+      - mongo
   #   networks:
   #     - spring-cloud-network
 
