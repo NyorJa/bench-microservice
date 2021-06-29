@@ -117,7 +117,7 @@ services:
   configuration-server:
     container_name: configuration-server
     build:
-      context: ./configuration-server/configuration-server
+      context: ./configuration-server/
     ports:
       - 8888:8888 
     # networks:
@@ -126,7 +126,7 @@ services:
   eureka:
     container_name: eureka
     build:
-      context: ./discovery-server/discovery-server
+      context: ./discovery-server/
     ports:
       - 8761:8761
     # networks:
@@ -163,7 +163,7 @@ services:
   api-gateway-service:
     container_name: api-gateway-service
     build:
-      context: ./api-gateway-service/api-gateway-service
+      context: ./api-gateway-service/
     restart: on-failure
     ports:
       - 8080:8080
@@ -180,7 +180,7 @@ services:
   product-service:
     container_name: product-service
     build:
-      context: ./product-service/product-service
+      context: ./product-service/
     restart: on-failure
     ports:
       - 8091:8091
@@ -204,7 +204,7 @@ services:
   # order-service:
   #   container_name: order-service
   #   build:
-  #     context: ./order-service/order-service
+  #     context: ./order-service/
   #   restart: on-failure
   #   ports: 
   #     - 8092:8092
@@ -229,7 +229,7 @@ services:
   # inventory-service:
   #   container_name: inventory-service
   #   build:
-  #     context: ./inventory-service/inventory-service
+  #     context: ./inventory-service/
   #   restart: on-failure
   #   ports:
   #     - 8183:8183
@@ -251,7 +251,7 @@ services:
   # notification:
   #   container_name: notification-service
   #   build:
-  #     context: ./notification-service/notification-service
+  #     context: ./notification-service/
   #   restart: on-failure
   #   ports:
   #     - 8093:8093
